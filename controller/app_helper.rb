@@ -44,7 +44,7 @@ module Bbx
             end
           end
           @parent_resource
-        end  
+        end
 
         def resource_class
           @resource_class ||= Kernel.const_get(controller_name.classify)
@@ -54,7 +54,9 @@ module Bbx
           @resource_symbol ||= resource_class.name.downcase.to_sym
         end
 
-        private
+        def new_resource
+          resource_class.new
+        end
         
         def render_500(exception = nil)
           render_exception(500, 'Internal server error', exception)
