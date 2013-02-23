@@ -24,14 +24,14 @@ module Bbx
       end
       
       def create
-        resource = collection_source.create(params[:venue])
+        resource = collection_source.create(params[resource_symbol])
         set_resource_instance_variable(resource_symbol, resource)
         respond_with resource
       end
 
       def update
         resource = single_resource
-        resource.update_attributes(params[:venue])
+        resource.update_attributes(params[resource_symbol])
         set_resource_instance_variable(resource_symbol, resource)
         respond_with resource
       end
