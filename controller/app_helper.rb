@@ -16,8 +16,6 @@ module Bbx
       end
 
       module InstanceMethods
-
-        protected
         
         def render_500(exception = nil)
           render_exception(500, 'Internal server error', exception)
