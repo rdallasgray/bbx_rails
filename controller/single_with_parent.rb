@@ -6,7 +6,7 @@ module Bbx
 
       def single_resource
         if parent_resource
-          parent_resource.send(resource_symbol)
+          parent_resource.send(resource_symbol) or new_resource
         else
           resource_class.find(params[:id])
         end

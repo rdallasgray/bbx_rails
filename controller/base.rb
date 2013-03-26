@@ -33,7 +33,8 @@ module Bbx
 
       def update
         resource = single_resource
-        resource.update_attributes(params[resource_symbol])
+        resource.attributes = params[resource_symbol]
+        resource.save
         set_resource_instance_variable(resource_symbol, resource)
         respond_with resource
       end
