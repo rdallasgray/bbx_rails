@@ -1,11 +1,3 @@
-module ActionController::HttpAuthentication::Digest
-  alias_method :validate_nonce, :old_validate_nonce
-
-  def validate_nonce(secret_key, request, value, seconds_to_timeout=5*60)
-    old_validate_nonce(secret_key, request, value, seconds_to_timeout=50*60)
-  end
-end
-
 module Bbx
   module DigestAuth
 
