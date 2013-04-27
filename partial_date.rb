@@ -1,6 +1,6 @@
 require 'date'
 
-module Circa
+module Bbx
   class PartialDate
 
     def initialize(date_string)
