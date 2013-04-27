@@ -1,4 +1,6 @@
-module Bbx
+require 'date'
+
+module Circa
   class PartialDate
 
     def initialize(date_string)
@@ -18,18 +20,18 @@ module Bbx
     end
 
     def to_date
+      valid_parts = valid_date_parts()
       full_datetime_string = datetime
       return nil if full_datetime_string == self.class.nil_datetime
       date_format_parts = self.class.date_format_parts.select do |k, v|
-        @valid_date_parts[k]
+        valid_parts[k]
       end
       date_format = date_format_parts.values.join("-")
-      time_format = @valid_date_parts.length == 3 ? self.class.time_format : ""
+      time_format = valid_parts.length == 3 ? self.class.time_format : ""
       format = [date_format, time_format].join(" ")
-      date_string = @valid_date_parts.values.join("-")
+      date_string = valid_parts.values.join("-")
       time_string = time_format.empty? ? "" : time
       datetime_string = [date_string, time_string].join(" ")
-      Rails.logger.info "#{datetime_string}, #{format}"
       DateTime.strptime(datetime_string, format)
     end
     
@@ -50,6 +52,7 @@ module Bbx
     end
 
     def valid_time_parts(time=nil)
+      time ||= normalize_time @input_date_string
       @valid_time_parts ||=
         begin
           return {} unless time =~ self.class.time_pattern
@@ -129,15 +132,20 @@ module Bbx
     def partial_time_from_string(time_string)
       @partial_time ||=
         begin
-          time_string = normalize(time_string).split(" ")[-1]
+          time_string = normalize_time(time_string)
           return self.class.nil_time unless time_string =~ self.class.time_pattern
           time_parts = self.class.nil_time_parts.merge(valid_time_parts(time_string))
+          time_parts.keep_if {|key, value| self.class.nil_time_parts[key]}
           time_parts.values.join(":")
         end
     end
 
     def normalize(datetime_string)
       datetime_string.gsub(/[T|Z]/, " ").gsub(/[^\d]*$/, "")
+    end
+
+    def normalize_time(time_string)
+      normalize(time_string).split(" ")[-1]
     end
 
     def partial_datetime_from_string(datetime_string)
