@@ -4,18 +4,17 @@ module Bbx
   module Model
     class User < ActiveRecord::Base
       DIGEST_REALM = 'user@example.com'
-      
+
       belongs_to :role
       has_many   :admin_sessions
-      
+
       validates :username, :presence => true, :uniqueness => true
-      validates :name, :presence => true
       validates :password, :presence => true
       validates :role_id, :presence => true
       validate  :role_exists
 
       default_scope :order => 'username'
-      
+
       attr_accessible :username, :password, :role_id, :name
 
       before_save { |user| digest_encrypt_password(user) }
@@ -52,7 +51,7 @@ module Bbx
           self.password = Digest::MD5.hexdigest([username, self.class::DIGEST_REALM, user.password].join(':')).to_s
         end
       end
-      
+
       def role_exists
         role = Role.find(self.role_id)
       rescue
