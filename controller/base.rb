@@ -23,7 +23,7 @@ module Bbx
       end
 
       def create
-        resource = collection_source.create(attributes)
+        resource = create_in_collection(params[resource_symbol])
         respond(resource_symbol, resource)
       end
 

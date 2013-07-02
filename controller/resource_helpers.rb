@@ -21,6 +21,10 @@ module Bbx
         collection_source.new
       end
 
+      def create_in_collection(attributes)
+        collection_source.create(attributes)
+      end
+
       def collection_source
         resource_class
       end
