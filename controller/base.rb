@@ -8,42 +8,36 @@ module Bbx
       def index
         collection = resource_collection
         collection = simple_list_from_resource(collection) if (params[:list])
-        set_resource_instance_variable(collection_symbol, collection)
-        respond_with collection
+        respond(collection_symbol, collection)
       end
 
       def show
         resource = single_resource
         resource = simple_list_from_resource(resource) if (params[:list])
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
+        respond(resource_symbol, resource)
       end
 
       def new
         resource = new_resource
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
+        respond(resource_symbol, resource)
       end
-      
+
       def create
-        resource = collection_source.create(params[resource_symbol])
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
+        resource = collection_source.create(attributes)
+        respond(resource_symbol, resource)
       end
 
       def update
         resource = single_resource
         resource.attributes = params[resource_symbol]
         resource.save
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
+        respond(resource_symbol, resource)
       end
 
       def destroy
         resource = single_resource
         resource.destroy
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
+        respond(resource_symbol, resource)
       end
     end
   end

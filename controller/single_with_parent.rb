@@ -4,6 +4,10 @@ module Bbx
 
       protected
 
+      def create_in_collection(attributes)
+        parent_resource.send("create_#{resource_symbol.to_s}".to_sym, attributes)
+      end
+
       def single_resource
         if parent_resource
           parent_resource.send(resource_symbol) or new_resource

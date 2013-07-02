@@ -24,4 +24,3 @@ module Bbx
     end
   end
 end
-
