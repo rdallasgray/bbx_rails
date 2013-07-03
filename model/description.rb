@@ -7,7 +7,7 @@ module Bbx
 
       default_scope :order => 'created_at DESC'
 
-      attr_accessible :text, :subject_id, :subject_type
+      attr_accessible :text
     end
   end
 end

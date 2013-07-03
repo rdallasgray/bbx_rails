@@ -51,11 +51,11 @@ module Bbx
           end
         end
       end
-      
+
       def year_source
         @year_source ||= :begins_on
       end
-      
+
       def get_active_years
         years = []
         all.each do |resource|
@@ -74,7 +74,7 @@ module Bbx
         def year
           pattern = /^[1-2]\d{3}/
           source_name = self.class.send(:year_source)
-          source = self.send(source_name.to_sym)
+          source = self.send(source_name.to_sym).to_s
           pattern.match(source).to_s if source =~ pattern
         end
 
