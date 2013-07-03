@@ -3,13 +3,7 @@ module Bbx
     module Downloadable
       def download
         resource = resource_class.find(params[:id])
-        extension = File.extname(resource.media.url(:original, :timestamp => false))
-        filename = "#{resource.id}_#{resource.subject.to_s.gsub(/[^\w]/, '').underscore}#{extension}"
-        data = open(URI.join(request.url, resource.media.url))
-        send_data(data.read,
-                  :filename => filename,
-                  :type     => resource.media_content_type,
-                  :x_sendfile => true)
+        send_media(resource)
       end
 
       def create
@@ -17,11 +11,30 @@ module Bbx
           render :nothing => true, :status => :no_content and return
         else
           resource = new_resource
-          # accommodating both the standard param name coming from bxtension and a testable param
+          # accommodate both the bxtension param 'file_data', and a testable param
           resource.media = params[:file_data] || params[resource_symbol][:media]
           resource.save
-          respond(resource_symbol, resource)
+          respond resource_symbol, resource
         end
+      end
+
+      private
+
+      def filename_for(resource)
+        extension = File.extname(resource.media.url(:original, :timestamp => false))
+        subject = resource.subject.to_s.gsub(/[^\w]/, '').underscore
+        "#{resource.id}_#{subject}#{extension}"
+      end
+
+      def send_media(resource)
+        send_data(get_data,
+                  :filename => filename_for(resource),
+                  :type     => resource.media_content_type,
+                  :x_sendfile => true)
+      end
+
+      def get_data(resource)
+        open(URI.join(request.url, resource.media.url)).read
       end
     end
   end

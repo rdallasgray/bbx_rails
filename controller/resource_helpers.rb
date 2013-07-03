@@ -1,6 +1,16 @@
 module Bbx
   module Controller
     module ResourceHelpers
+
+      def create_in_collection(attributes)
+        collection_source.create(attributes)
+      end
+
+      def respond(sym, res)
+        set_resource_instance_variable(sym, res)
+        respond_with res
+      end
+
       def resource_class
         @resource_class ||= Kernel.const_get(controller_name.classify)
       end
