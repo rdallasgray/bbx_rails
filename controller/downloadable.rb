@@ -27,7 +27,7 @@ module Bbx
       end
 
       def send_media(resource)
-        send_data(get_data,
+        send_data(get_data(resource),
                   :filename => filename_for(resource),
                   :type     => resource.media_content_type,
                   :x_sendfile => true)
