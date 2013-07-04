@@ -13,8 +13,11 @@ module Bbx
           resource = new_resource
           # accommodate both the bxtension param 'file_data', and a testable param
           resource.media = params[:file_data] || params[resource_symbol][:media]
-          resource.save
-          respond resource_symbol, resource
+          if (resource.save)
+            render json: resource.to_json, status: :created, location: url_for(resource)
+          else
+            render json: resource.errors.full_messages, status: :unprocessable_entity
+          end
         end
       end
 
