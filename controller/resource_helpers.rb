@@ -46,11 +46,6 @@ module Bbx
       def resource_collection
         collection_source.all
       end
-
-      def respond(resource_symbol, resource)
-        set_resource_instance_variable(resource_symbol, resource)
-        respond_with resource
-      end
     end
   end
 end
