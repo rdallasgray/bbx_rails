@@ -13,6 +13,8 @@ module Bbx
           resource = new_resource
           # accommodate both the bxtension param 'file_data', and a testable param
           resource.media = params[:file_data] || params[resource_symbol][:media]
+          # force render :json --otherwise we get a 406
+          @image = resource
           if (resource.save)
             render json: resource.to_json, status: :created, location: url_for(resource)
           else
